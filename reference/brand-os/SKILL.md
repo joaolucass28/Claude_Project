@@ -7,15 +7,22 @@ description: >
   quando pedirem para "entender o que esse projeto realmente é", comparar uma
   apresentação com seu site, extrair método de material conceitual, ou avaliar
   como IA está sendo usada numa metodologia de branding. Não é correção acadêmica.
-  MODO CONSTRUÇÃO: use quando o usuário quiser criar uma marca do zero, reposicionar
-  uma existente, desenvolver identidade e narrativa, construir presença digital, ou
-  diagnosticar por que uma marca não conecta com seu público. Ative também quando
-  mencionar branding, identidade de marca, posicionamento, storytelling, tom de voz,
-  ou pedir ajuda para "definir o que minha marca é". Os dois modos podem ser usados
-  em sequência na mesma sessão: analisar um projeto → construir a partir do que foi extraído.
+  MODO CONSTRUÇÃO: use apenas quando o usuário demonstrar intenção de agir —
+  criar uma marca do zero, reposicionar uma existente, desenvolver identidade ou
+  narrativa, ou diagnosticar por que uma marca não conecta. Intenção de agir
+  significa verbos como: criar, construir, desenvolver, definir, reposicionar,
+  consertar, lançar. Mencionar os temas branding, identidade ou posicionamento
+  sem intenção de agir NÃO ativa este modo. Os dois modos podem ser usados em
+  sequência na mesma sessão: analisar um projeto → construir a partir do que
+  foi extraído.
 ---
 
 # Brand OS — Sistema Operacional de Branding com IA
+
+> Posição no sistema: DESENVOLVIMENTO — segunda skill na sequência padrão.
+> Recebe o Documento de Identidade do brand-dna como entrada ou analisa material existente (modo ANÁLISE).
+> Se brand-dna não foi concluído, aplique o Teste de Foco; se o usuário travar, redirecione para brand-dna.
+> Próximo passo natural: scene-architect (produção de conteúdo visual a partir da identidade desenvolvida).
 
 Dois modos. Uma base conceitual. Um único princípio de operação.
 
@@ -50,9 +57,24 @@ Identifique o modo antes de qualquer resposta:
 |------------------|------|
 | Traz PDF, deck, site, TCC, manifesto para ser lido | **ANÁLISE** |
 | Pede para "entender o que esse projeto é" | **ANÁLISE** |
-| Quer criar ou desenvolver uma marca | **CONSTRUÇÃO** |
-| Está travado em identidade, narrativa ou posicionamento | **CONSTRUÇÃO** |
+| Quer *criar, construir, desenvolver ou lançar* uma marca | **CONSTRUÇÃO** |
+| Quer *reposicionar, consertar ou diagnosticar* uma marca existente | **CONSTRUÇÃO** |
+| Está travado em identidade, narrativa ou posicionamento e quer avançar | **CONSTRUÇÃO** |
+| Menciona branding/identidade/posicionamento sem verbo de ação | **Aguardar — perguntar intenção** |
 | Quer analisar E depois construir | **ANÁLISE → CONSTRUÇÃO** |
+
+**Quando o sinal for ambíguo**, não assuma o modo. Faça uma única pergunta de
+clarificação antes de prosseguir:
+
+> *"Você quer entender melhor o que esse projeto ou marca já é — ou quer usar
+> isso como base para criar ou reposicionar algo?"*
+
+**Nota sobre brand-dna:** Antes de ativar o modo CONSTRUÇÃO, verifique se a
+marca tem identidade e propósito minimamente definidos. Se o usuário não
+conseguir responder quem é, o que faz e por que isso importa, redirecione para
+a skill **brand-dna** primeiro. O modo CONSTRUÇÃO pressupõe que o usuário já
+tem respostas funcionais para essas três perguntas — brand-dna é o que garante
+isso quando não tem.
 
 No modo pipeline (análise → construção), execute o modo Análise completo,
 apresente os resultados, e pergunte: *"Quer que eu use o que extraímos aqui
@@ -82,6 +104,15 @@ Seu trabalho é identificar e articular esse sistema com clareza.
 - **Apenas o PDF**: concentre-se nas seções A–F e H–J
 - **Banca intermediária / projeto inacabado**: trate fases não executadas como
   intenções declaradas, não como resultados — analise o gap entre proposta e prova
+
+### Especialistas disponíveis no Modo Análise
+
+Para aprofundar qualquer dimensão da análise, ative o especialista correspondente
+do Sistema Modular (seção abaixo). Os mais relevantes para este modo:
+- **Analista Cultural** — tensões, contexto, referências semióticas
+- **Estrategista de Identidade** — propósito, posicionamento, arquétipo
+- **Analista de Coerência** — alinhamento entre discurso e prática
+- **Arquiteto de Narrativa** — estrutura narrativa, storytelling implícito
 
 ### Framework de Análise (10 dimensões)
 
@@ -166,9 +197,9 @@ description: >
 
 ## MODO CONSTRUÇÃO
 
-*Use quando o usuário quer criar ou desenvolver uma marca.*
+*Use quando o usuário quer criar, desenvolver ou reposicionar uma marca com intenção de agir.*
 
-### Entrada Obrigatória — Teste de Foco
+### Pré-condição: Teste de Foco
 
 Sempre comece com estas três perguntas. Elas calibram tudo que vem depois.
 
@@ -181,12 +212,31 @@ Sempre comece com estas três perguntas. Elas calibram tudo que vem depois.
 Se o usuário travar em qualquer uma, é aí que o trabalho começa.
 Não avance para as fases sem resposta funcional para as três.
 
+**Se a marca ainda não tem identidade definida:** redirecione para **brand-dna**
+antes de continuar. Retorne ao modo CONSTRUÇÃO somente depois que o usuário
+tiver respostas sólidas para as três perguntas acima.
+
 Pergunte também: em qual fase está a marca? (ideia / protótipo / validando / escalando)
 Que referências de marcas admira? Que recursos tem disponíveis?
 
+### Especialistas disponíveis no Modo Construção
+
+Para aprofundar qualquer fase, ative o especialista correspondente do Sistema
+Modular (seção abaixo). Os mais relevantes para este modo:
+- **Analista Cultural** — Fases 1 e 4 (tensões, diagnóstico de mercado)
+- **Estrategista de Identidade** — Fase 2 (propósito, posicionamento, arquétipo)
+- **Especialista em Naming** — Fase 2 (nome, semiótica)
+- **Diretor Criativo** — Fases 2 e 3 (direção visual, estética, referências)
+- **Arquiteto de Narrativa** — Fases 2 e 3 (storytelling, tom de voz, conteúdo)
+- **Gestor de Comunidade** — Fase 5 (ativação, rituais, pertencimento)
+- **Analista de Coerência** — Fases 4 e 6 (auditoria de alinhamento)
+
 ### As Seis Fases
 
+---
+
 **FASE 1 — Ideia & Diagnóstico Cultural**
+
 Antes de criar qualquer símbolo, slogan ou campanha: identificar o conflito
 cultural que a marca ajuda a resolver. Marcas fortes nascem de tensões reais —
 não de espaços de mercado vazios.
@@ -218,9 +268,13 @@ criativa que sirva como gatilho de imaginação para o designer,
 sem perder a essência do símbolo original.
 ```
 
+**Entregável:** mapa de tensões culturais relevantes + 3–5 referências simbólicas
+com frases de provocação criativa. Use o **Analista Cultural** para aprofundar.
+
 ---
 
 **FASE 2 — Construção de Identidade & Protótipo**
+
 Traduzir o diagnóstico cultural em sistema de identidade coerente.
 
 Os seis elementos do sistema:
@@ -234,13 +288,38 @@ Os seis elementos do sistema:
 Perguntas orientadoras: Qual é o arquétipo central? Que território simbólico
 a marca ocupa que nenhum concorrente ocupa? Como a marca soa? O que ela nunca diria?
 
+**Entregável:** documento de identidade com os seis elementos preenchidos em
+nível de protótipo — suficiente para validar direção, não para publicar.
+Use o **Estrategista de Identidade**, **Especialista em Naming** ou
+**Diretor Criativo** conforme o ponto de travamento.
+
 ---
 
 **FASE 3 — Narrativa & Presença Digital**
+
 Uma narrativa central — múltiplas expressões por canal.
 
-Por plataforma: tema macro, micro-tópicos (3–5), formato predominante,
-tom específico, frequência sustentável.
+**Estrutura de narrativa por plataforma:**
+
+Para cada canal relevante, defina:
+- **Tema macro**: o território temático da marca nesse canal
+- **Micro-tópicos** (3–5): assuntos concretos dentro do tema macro
+- **Formato predominante**: texto, imagem, vídeo curto, carrossel, áudio
+- **Tom específico**: como o tom de voz da marca se adapta ao contexto do canal
+- **Frequência sustentável**: o que o criador consegue manter, não o ideal teórico
+- **Gancho de identidade**: o elemento visual ou verbal recorrente que torna o
+  conteúdo reconhecível mesmo fora de contexto
+
+**Teste de coerência narrativa:** alguém que viu apenas um post isolado consegue
+identificar a marca em outro canal? Se não, a narrativa não está consolidada.
+
+**Entregável por canal:** preencher a estrutura acima. Use o **Arquiteto de
+Narrativa** para construir o framework de conteúdo e o **Diretor Criativo**
+para a direção visual.
+
+Para produção de conteúdo visual, ative a skill **scene-architect**: transforma
+qualquer briefing em prompt de imagem estruturado em 6 blocos + prompt unificado
+pronto para geração.
 
 *Prompt estruturado — Arquiteto de Cena Visual:*
 ```
@@ -255,7 +334,7 @@ Para cada entrada, organize em:
   5. Detalhes de textura
   6. Atmosfera final
 
-(B) Prompt unificado: texto corrido em 1–2 parágrafos juntando os 6 blocos.
+(B) Prompt unificado: texto corrido em inglês, 1–2 parágrafos juntando os 6 blocos.
 
 Contexto: [uso da imagem + sentimento que deve transmitir]
 ```
@@ -263,13 +342,19 @@ Contexto: [uso da imagem + sentimento que deve transmitir]
 ---
 
 **FASE 4 — Validação e Primeiras Vendas**
-Testar hipóteses de identidade no mercado com risco controlado.
 
-Medir: clareza do propósito percebido, coerência entre plataformas,
-identificação e engajamento da comunidade.
+*Orientação estratégica — não protocolo fixo. Adapte ao contexto da marca.*
 
-Auditoria de coerência: alguém que viu um post isolado reconheceria a marca
-em outro canal? O discurso e a prática da marca estão alinhados?
+Testar hipóteses de identidade no mercado com risco controlado. O objetivo
+desta fase não é escalar — é confirmar se a marca foi entendida como pretendido.
+
+Perguntas a responder antes de avançar para Fase 5:
+- O propósito da marca é percebido claramente por quem não conhece o criador?
+- Há coerência entre como a marca aparece em cada canal?
+- O público certo está sendo atraído — ou a identidade está atraindo o público errado?
+
+Auditoria de coerência: use o **Analista de Coerência** para avaliar se discurso
+e prática estão alinhados — em linguagem, visual e comportamento.
 
 *Nota metodológica*: nenhuma metodologia garante sucesso. Fator humano e
 contexto externo são variáveis sempre presentes. Métricas indicam direção, não destino.
@@ -277,28 +362,48 @@ contexto externo são variáveis sempre presentes. Métricas indicam direção, 
 ---
 
 **FASE 5 — Escala & Comunidade**
-Expandir presença sem diluir identidade.
 
-Distinção fundamental: **audiência** consome conteúdo.
-**Comunidade** se identifica com valores e participa ativamente.
+*Orientação estratégica — não protocolo fixo. Adapte ao contexto da marca.*
 
-Estratégias: rituais recorrentes, pertencimento simbólico, cocriação,
-ativação de embaixadores orgânicos (não necessariamente influenciadores pagos).
+Expandir presença sem diluir identidade. Só faz sentido após Fase 4 confirmar
+que a identidade foi entendida e está atraindo as pessoas certas.
+
+Distinção fundamental: **audiência** consome conteúdo. **Comunidade** se
+identifica com valores e participa ativamente.
+
+Estratégias orientadoras:
+- Rituais recorrentes que criam reconhecimento e antecipação
+- Símbolos de pertencimento que o público carrega sem ser solicitado
+- Cocriação: trazer a comunidade para dentro da narrativa
+- Embaixadores orgânicos — identificar e ativar, não contratar
+
+Use o **Gestor de Comunidade** para operacionalizar qualquer dessas estratégias.
 
 ---
 
 **FASE 6 — Marca Cultural & Liderança de Opinião**
+
+*Orientação estratégica — não protocolo fixo. Descreve um estado, não um processo.*
+
 A marca deixa de ser percebida como produto e passa a ser referência cultural.
+Este estágio não é construído diretamente — é consequência de consistência e
+autenticidade ao longo do tempo.
 
 Indicadores (não garantias): citada espontaneamente, conhecida fora do
-público-alvo, capaz de criar categorias (não apenas ocupar), defendida
-pelo público sem ser solicitado.
+público-alvo original, capaz de criar categorias em vez de apenas ocupá-las,
+defendida pelo público sem ser solicitado.
+
+Se o usuário está tentando "chegar" nesta fase deliberadamente, redirecione o
+foco: marcas culturais são resultado de fazer bem as Fases 1–5, não de
+estratégias de alto nível desconectadas do trabalho cotidiano.
 
 ---
 
-## Sistema Modular de Especialistas (ambos os modos)
+## Sistema Modular de Especialistas
 
-Ative como persona especialista quando o usuário precisar de profundidade num domínio:
+*Disponível em ambos os modos. Ative como persona especialista quando o usuário
+precisar de profundidade num domínio específico. Veja a seção de cada modo para
+quais especialistas são mais relevantes em cada contexto.*
 
 | Módulo | Acionar quando... |
 |--------|------------------|
@@ -319,9 +424,10 @@ Sua tarefa: [pergunta ou entrega específica]."
 
 ---
 
-## Vocabulário Teórico de Referência (ambos os modos)
+## Vocabulário Teórico de Referência
 
-Use como lentes de julgamento. Não cite desnecessariamente — use para pensar.
+*Disponível em ambos os modos. Use como lentes de julgamento — não cite
+desnecessariamente. Estas referências servem para pensar, não para impressionar.*
 
 - **Neumeier**: Marca é percepção subjetiva. Critério: o projeto entende que
   marca é o que o público *sente*, não o que a empresa declara?
