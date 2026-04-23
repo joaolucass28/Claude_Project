@@ -1,0 +1,3 @@
+[submodule "clients/otma"]
+	path = clients/otma
+	url = https://github.com/joaolucass28/otma.git
