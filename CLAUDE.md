@@ -1,3 +1,6 @@
+## Session start
+At the start of every conversation, invoke the `obsidian:obsidian-cli` skill and read `_INDEX.md` from the vault at `OneDrive/Obsidian/Life/Claude/` to orient context. Throughout the conversation, use obsidian skills to capture notes, make connections, and write to the vault as appropriate.
+
 ## Output preference
 When useful, structure responses with:
 - positioning

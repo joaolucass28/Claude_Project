@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTMA — MVP Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #fafafa;
+    --gray-100: #f4f4f4;
+    --gray-200: #e8e8e8;
+    --gray-400: #a0a0a0;
+    --gray-600: #5a5a5a;
+    --gray-800: #222222;
+    --accent: #1a1a1a;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 72px 40px;
+    background: var(--black);
+    color: var(--white);
+    max-width: 100%;
+  }
+
+  .cover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .cover-wordmark {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .cover-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--gray-400);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cover-body {
+    max-width: 580px;
+  }
+
+  .cover-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 24px;
+  }
+
+  .cover-title {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+
+  .cover-title strong {
+    font-weight: 700;
+  }
+
+  .cover-desc {
+    font-size: 1.05rem;
+    color: var(--gray-400);
+    line-height: 1.7;
+    max-width: 460px;
+  }
+
+  .cover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cover-date {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    letter-spacing: 0.06em;
+  }
+
+  .cover-tagline {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    padding: 56px 40px 0;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .section-number {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid var(--black);
+    margin-bottom: 36px;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    margin-top: 32px;
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  p {
+    font-size: 0.95rem;
+    color: var(--gray-800);
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--gray-100);
+    border-left: 3px solid var(--black);
+    padding: 18px 22px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout p {
+    margin: 0;
+    font-size: 0.92rem;
+    font-style: italic;
+    color: var(--gray-800);
+  }
+
+  .callout strong { font-style: normal; color: var(--black); }
+
+  /* ── SEQUENCE ── */
+  .sequence {
+    display: flex;
+    gap: 0;
+    margin: 28px 0;
+  }
+
+  .seq-item {
+    flex: 1;
+    padding: 20px;
+    border: 1.5px solid var(--gray-200);
+    border-right: none;
+    position: relative;
+  }
+
+  .seq-item:last-child { border-right: 1.5px solid var(--gray-200); }
+
+  .seq-item:first-child { border-radius: 6px 0 0 6px; }
+  .seq-item:last-child { border-radius: 0 6px 6px 0; }
+
+  .seq-num {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 6px;
+  }
+
+  .seq-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .seq-desc {
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.88rem;
+  }
+
+  thead tr {
+    border-bottom: 1.5px solid var(--black);
+  }
+
+  thead th {
+    text-align: left;
+    padding: 8px 12px 10px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody td {
+    padding: 12px 12px;
+    color: var(--gray-800);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tbody td:first-child {
+    font-weight: 500;
+    color: var(--black);
+    white-space: nowrap;
+  }
+
+  /* ── LIST ── */
+  ul {
+    padding-left: 0;
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  ul li {
+    font-size: 0.92rem;
+    color: var(--gray-800);
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid var(--gray-200);
+    line-height: 1.6;
+  }
+
+  ul li:last-child { border-bottom: none; }
+
+  ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gray-400);
+    font-size: 0.8rem;
+  }
+
+  /* ── PRICE BLOCK ── */
+  .price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 24px 0;
+    border-top: 1.5px solid var(--black);
+    border-bottom: 1.5px solid var(--black);
+    margin: 28px 0;
+  }
+
+  .price-amount {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .price-label {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.4;
+  }
+
+  /* ── OUTREACH BOX ── */
+  .outreach-box {
+    background: var(--black);
+    color: var(--white);
+    padding: 32px 36px;
+    border-radius: 8px;
+    margin: 28px 0;
+  }
+
+  .outreach-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 20px;
+  }
+
+  .outreach-text {
+    font-size: 0.98rem;
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .outreach-text strong { color: var(--white); font-style: normal; }
+
+  /* ── PHASE BLOCK ── */
+  .phase-block {
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .phase-header {
+    background: var(--gray-100);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .phase-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .phase-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    background: var(--gray-200);
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .phase-body {
+    padding: 16px 20px;
+  }
+
+  .phase-body ul { margin: 0; }
+
+  .phase-body ul li {
+    font-size: 0.88rem;
+    padding: 5px 0 5px 18px;
+    color: var(--gray-800);
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .phase-body ul li:last-child { border-bottom: none; }
+
+  .phase-body ul li::before { font-size: 0.75rem; }
+
+  /* ── TEST BLOCK ── */
+  .test-block {
+    background: var(--black);
+    color: var(--white);
+    padding: 28px 32px;
+    border-radius: 8px;
+    margin: 28px 0;
+  }
+
+  .test-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 14px;
+  }
+
+  .test-question {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--white);
+    margin: 0;
+  }
+
+  .test-sub {
+    font-size: 0.85rem;
+    color: var(--gray-400);
+    margin-top: 12px;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .doc-footer span {
+    font-size: 0.72rem;
+    color: var(--gray-400);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── SPACER ── */
+  .spacer { height: 48px; }
+  .spacer-lg { height: 72px; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { font-size: 13px; }
+
+    .cover {
+      min-height: auto;
+      page-break-after: always;
+      padding: 56px 40px;
+    }
+
+    .section-divider { page-break-before: auto; }
+
+    .phase-block, .outreach-box, .test-block, .price-block {
+      page-break-inside: avoid;
+    }
+
+    .sequence { page-break-inside: avoid; }
+
+    table { page-break-inside: avoid; }
+
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ COVER -->
+<div class="cover">
+  <div class="cover-header">
+    <span class="cover-wordmark">OTMA</span>
+    <span class="cover-label">Confidential — Internal Brief</span>
+  </div>
+
+  <div class="cover-body">
+    <p class="cover-eyebrow">Agency MVP Brief · April 2026</p>
+    <h1 class="cover-title">From idea<br>to <strong>first client</strong><br>in 3 weeks.</h1>
+    <p class="cover-desc">A concrete definition of OTMA's Minimum Viable Offer, the exact shelf needed to launch, and a step-by-step implementation track — built on the Edra AI methodology.</p>
+  </div>
+
+  <div class="cover-footer">
+    <span class="cover-date">Prepared April 7, 2026</span>
+    <span class="cover-tagline">Diagnose → Build → Transfer<br>The OTMA methodology</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 1 -->
+<div class="section-divider">
+  <p class="section-number">01</p>
+  <h2 class="section-title">The Core Insight</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>Everything in a standard agency launch sequence is downstream of the first client. Most founders build brand, website, and offer copy before validating that anyone will buy — and end up with a polished product nobody has tested.</p>
+
+  <p>OTMA flips the sequence.</p>
+
+  <div class="callout">
+    <p><strong>Standard sequence (what everyone does):</strong><br>Brand → Offers → Website → Launch → Clients</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>MVP sequence (what actually works):</strong><br>First client → Deliver Clarity Sprint → Build everything else from evidence</p>
+  </div>
+
+  <p>The brand foundation, site, and offer copy are real deliverables — but they belong in Week 3, not Week 1. The first week has one job: prove that someone will pay for a diagnosis and find it valuable.</p>
+
+  <h3>The Edra AI Principle (Adapted)</h3>
+  <p>Edra AI doesn't ask clients to document their processes. It reads what already exists — tickets, logs, messages — and surfaces the reality of how the business actually runs.</p>
+  <p><strong>OTMA's version:</strong> OTMA doesn't ask clients to define what they want. It analyzes what they already have — existing brand, site, workflow friction — and surfaces the clearest path forward.</p>
+  <p>This shifts the framing from "tell us about yourself" to "give us access and we'll show you what's actually happening." Faster to sell, harder to confuse, immediately valuable.</p>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 2 -->
+<div class="section-divider">
+  <p class="section-number">02</p>
+  <h2 class="section-title">The MVP: One Clarity Sprint</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>OTMA is viable when João can run this sequence end-to-end — once — with a real client paying real money:</p>
+
+  <div class="sequence">
+    <div class="seq-item">
+      <p class="seq-num">Day 1</p>
+      <p class="seq-label">Access</p>
+      <p class="seq-desc">Client shares existing materials — brand, site, workflow description, or internal tools</p>
+    </div>
+    <div class="seq-item">
+      <p class="seq-num">Days 2–3</p>
+      <p class="seq-label">Diagnose</p>
+      <p class="seq-desc">OTMA maps current state, identifies the gap, finds the highest-leverage intervention</p>
+    </div>
+    <div class="seq-item">
+      <p class="seq-num">Day 3</p>
+      <p class="seq-label">Deliver</p>
+      <p class="seq-desc">Written Situation Report + 60-minute walkthrough call with the client</p>
+    </div>
+  </div>
+
+  <h3>What the Client Gets</h3>
+  <ul>
+    <li>Written Situation Report — current state, gap analysis, prioritized action list</li>
+    <li>60-minute live walkthrough of findings (not a sales call)</li>
+    <li>Decision point: proceed with OTMA or take the plan and execute elsewhere</li>
+    <li>Real output, not a vague slide deck with generic "insights"</li>
+  </ul>
+
+  <h3>What the Clarity Sprint Is NOT</h3>
+  <ul>
+    <li>A free discovery call with a fancy name</li>
+    <li>A hook to sell more hours</li>
+    <li>A document full of recommendations that could apply to any company</li>
+    <li>A commitment to a full project — client decides after, not before</li>
+  </ul>
+
+  <div class="price-block">
+    <span class="price-amount">R$1.500 – R$2.000</span>
+    <span class="price-label">Fixed price<br>3 business days</span>
+  </div>
+
+  <p>Low enough to reduce the barrier to start. High enough to filter for clients who take the problem seriously. Most sprints convert naturally into a core engagement — because after Day 3, the client sees the problem clearly for the first time.</p>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 3 -->
+<div class="section-divider">
+  <p class="section-number">03</p>
+  <h2 class="section-title">The Minimal Shelf</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>This is everything OTMA needs to exist to sell and deliver the first Clarity Sprint. Nothing more.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>What it is</th>
+        <th>Build time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Clarity Sprint 1-pager</td>
+        <td>One Google Doc or Notion page: what it is, what it produces, price, how to start</td>
+        <td>1 session</td>
+      </tr>
+      <tr>
+        <td>Outreach message</td>
+        <td>3 sentences João sends to a warm contact. Names the problem, names the offer, asks one question.</td>
+        <td>30 minutes</td>
+      </tr>
+      <tr>
+        <td>Intake questions</td>
+        <td>5 questions to get access to existing materials. Sent after the client says yes.</td>
+        <td>30 minutes</td>
+      </tr>
+      <tr>
+        <td>Situation Report template</td>
+        <td>Structured doc: Current State → Gap Analysis → Priority Intervention → Path Forward. Write once, reuse forever.</td>
+        <td>1 session</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>What you do NOT need before the first sprint:</strong> a website, a visual identity, a logo, offer copy for all 5 service lines, agent configs, or a content calendar. Those come after — built from real delivery evidence, not assumptions.</p>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 4 -->
+<div class="section-divider">
+  <p class="section-number">04</p>
+  <h2 class="section-title">Outreach Message</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>Three versions — adapt to the contact's actual situation. The rule: name the specific problem you've already observed, don't pitch services abstractly.</p>
+
+  <h3>Version A — Positioning / Brand Problem</h3>
+  <div class="outreach-box">
+    <p class="outreach-label">Message · WhatsApp / Email</p>
+    <p class="outreach-text">
+      "Tenho acompanhado o que você está construindo e tenho uma impressão clara de que o posicionamento ainda não está capturando o valor real do que você entrega. Estou testando um diagnóstico rápido — 3 dias, resultado escrito, R$1.500 — que mapeia exatamente onde está o gap e qual é a melhor intervenção. <strong>Faria sentido para você agora?</strong>"
+    </p>
+  </div>
+
+  <h3>Version B — Website / Conversion Problem</h3>
+  <div class="outreach-box">
+    <p class="outreach-label">Message · WhatsApp / Email</p>
+    <p class="outreach-text">
+      "Olhei seu site e tenho uma hipótese de por que ele não está convertendo do jeito que deveria — mas quero confirmar antes de falar qualquer coisa. Estou testando um diagnóstico de 3 dias que entrega uma análise escrita e uma call de 60 minutos com o que encontrei, por R$1.500. <strong>Você toparia testar comigo?</strong>"
+    </p>
+  </div>
+
+  <h3>Version C — Workflow / Operational Problem</h3>
+  <div class="outreach-box">
+    <p class="outreach-label">Message · WhatsApp / Email</p>
+    <p class="outreach-text">
+      "Sei que você está com fricção operacional [no processo X] — já ouvi você mencionar isso mais de uma vez. Estou testando um diagnóstico de 3 dias onde eu mapeio o que está acontecendo de verdade e entrego um relatório priorizado, R$1.500. <strong>Posso usar o seu caso como piloto?</strong>"
+    </p>
+  </div>
+
+  <p style="margin-top: 24px;">The last sentence of each version matters: it's a specific yes/no question, not an open invitation to "talk." Don't vary it.</p>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 5 -->
+<div class="section-divider">
+  <p class="section-number">05</p>
+  <h2 class="section-title">Implementation Track</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>Three weeks. Two phases. One test.</p>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-name">Week 1 — Build the Shelf</span>
+      <span class="phase-tag">4 items, ~3 hours total</span>
+    </div>
+    <div class="phase-body">
+      <ul>
+        <li>Write Clarity Sprint 1-pager (what it is, what the client gets, R$1.500, how to start)</li>
+        <li>Write Situation Report template (4 sections: Current State, Gap Analysis, Priority Intervention, Path Forward)</li>
+        <li>Identify 3 warm contacts with an observable problem (brand, site, or workflow)</li>
+        <li>Write and send outreach to all 3 — adapt message to each person's actual situation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-name">Week 2 — First Engagement</span>
+      <span class="phase-tag">First client</span>
+    </div>
+    <div class="phase-body">
+      <ul>
+        <li>Run intake: send 5 questions, get access to existing materials</li>
+        <li>Day 1–2: analyze, map the gap, identify highest-leverage intervention</li>
+        <li>Day 3: write the Situation Report (using the template)</li>
+        <li>Day 3: deliver — share the doc, run the 60-min walkthrough call</li>
+        <li>After call: document everything João had to improvise — that list is the gap log</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-block">
+    <div class="phase-header">
+      <span class="phase-name">Week 3 — Build From Evidence</span>
+      <span class="phase-tag">Now the brand docs make sense</span>
+    </div>
+    <div class="phase-body">
+      <ul>
+        <li>Fill brand-foundation.md using real answers surfaced during the sprint</li>
+        <li>Convert the delivery into the first case study (anonymized if needed)</li>
+        <li>Use the case study as the hero proof point for the future homepage</li>
+        <li>Start site-plan.md — copy written from something real, not hypothetical</li>
+        <li>Fix anything from the gap log before the second engagement</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 6 -->
+<div class="section-divider">
+  <p class="section-number">06</p>
+  <h2 class="section-title">The 5 Service Lines (Post-MVP)</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>These are fully defined and ready to deploy after the first Clarity Sprint validates the model. They are NOT what OTMA leads with — the sprint is always the entry point.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Offer</th>
+        <th>Trigger</th>
+        <th>Duration</th>
+        <th>Price Floor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Brand Foundation Sprint</td>
+        <td>No clear positioning, commodity look</td>
+        <td>10 days</td>
+        <td>R$4.500</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Authority Website System</td>
+        <td>Brand exists, website doesn't convert</td>
+        <td>15 days</td>
+        <td>R$6.500</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Workflow Optimization Audit</td>
+        <td>Manual work that should be automated</td>
+        <td>5 days</td>
+        <td>R$4.500</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Automation Build System</td>
+        <td>Process identified, ready to automate</td>
+        <td>10 days</td>
+        <td>R$8.000</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>AI Agent Strategy & Implementation</td>
+        <td>AI inside existing systems, not on top</td>
+        <td>15 days</td>
+        <td>R$14.000</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The natural funnel: Clarity Sprint (entry) → identifies which service line applies → client proceeds with a core engagement already understanding the problem. No cold selling required.</p>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ SECTION 7 -->
+<div class="section-divider">
+  <p class="section-number">07</p>
+  <h2 class="section-title">The Test</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>After the first Clarity Sprint is delivered, one question determines everything:</p>
+
+  <div class="test-block">
+    <p class="test-label">The Validation Question</p>
+    <p class="test-question">"Did the client say something specific they hadn't thought of before — and did they want to keep working with OTMA?"</p>
+    <p class="test-sub">If yes: the model works. Build the rest.<br>If no: diagnose why before building anything else downstream.</p>
+  </div>
+
+  <h3>If yes — the build sequence unlocks</h3>
+  <ul>
+    <li>Fill brand-foundation.md from delivery evidence</li>
+    <li>Run brand-dna → brand-os skills to derive full brand system</li>
+    <li>Build site-plan.md and homepage copy</li>
+    <li>Framer build from approved copy</li>
+    <li>Second Clarity Sprint (soft launch: 2 clients max before full release)</li>
+  </ul>
+
+  <h3>If no — the three most likely failure modes</h3>
+  <ul>
+    <li><strong>Situation Report was too generic.</strong> Fix: observations must be specific to this client's materials — nothing that could appear in any competitor's report</li>
+    <li><strong>Wrong client selected.</strong> Fix: the pilot client should be someone with an obvious, observable problem — not a favor, not a sympathetic ear</li>
+    <li><strong>Delivery was a presentation, not a diagnosis.</strong> Fix: the report surfaces something the client didn't already know — if they already knew it, the diagnosis wasn't deep enough</li>
+  </ul>
+
+  <div class="spacer"></div>
+
+  <div class="doc-footer">
+    <span>OTMA Agency · Internal MVP Brief · April 2026</span>
+    <span>Confidential</span>
+  </div>
+
+</div>
+
+</body>
+</html>

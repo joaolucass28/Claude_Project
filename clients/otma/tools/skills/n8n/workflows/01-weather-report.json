@@ -1,0 +1,162 @@
+{
+  "name": "01 — Weather Report (Brumadinho)",
+  "nodes": [
+    {
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Every Day at 8am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-0001-0001-0001-000000000002",
+      "name": "Get Weather",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "https://wttr.in/Brumadinho?format=3",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-0001-0001-0001-000000000003",
+      "name": "Format Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [680, 300],
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "field1",
+              "name": "weather_report",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            },
+            {
+              "id": "field2",
+              "name": "city",
+              "value": "Brumadinho",
+              "type": "string"
+            },
+            {
+              "id": "field3",
+              "name": "checked_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a1b2c3d4-0001-0001-0001-000000000004",
+      "name": "Extract Temperature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "parameters": {
+        "jsCode": "const report = $input.first().json.weather_report;\n// Parses temp from strings like \"Brumadinho: ⛅  +22°C\"\nconst match = report.match(/([+-]?\\d+)°C/);\nconst temp = match ? parseInt(match[1]) : 0;\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    temperature: temp\n  }\n}];"
+      }
+    },
+    {
+      "id": "a1b2c3d4-0001-0001-0001-000000000005",
+      "name": "Temp > 30?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1120, 300],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond1",
+              "leftValue": "={{ $json.temperature }}",
+              "rightValue": 30,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a1b2c3d4-0001-0001-0001-000000000006",
+      "name": "Send WhatsApp Alert",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1340, 200],
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "phoneNumberId": "YOUR_PHONE_NUMBER_ID",
+        "recipientPhoneNumber": "+55YOUR_NUMBER",
+        "textBody": "=☀️ *Calor em Brumadinho!*\n\n{{ $json.weather_report }}\n🌡️ {{ $json.temperature }}°C\n🕗 {{ $now.format('HH:mm') }}"
+      },
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "YOUR_WHATSAPP_CREDENTIAL_ID",
+          "name": "WhatsApp Business account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every Day at 8am": {
+      "main": [
+        [{ "node": "Get Weather", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get Weather": {
+      "main": [
+        [{ "node": "Format Result", "type": "main", "index": 0 }]
+      ]
+    },
+    "Format Result": {
+      "main": [
+        [{ "node": "Extract Temperature", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extract Temperature": {
+      "main": [
+        [{ "node": "Temp > 30?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Temp > 30?": {
+      "main": [
+        [{ "node": "Send WhatsApp Alert", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,1 @@
+- [Glebas Rurais QA — Second Review](project_glebas_rurais_qa.md) — Live on glebasrurais.com.br as of 2026-04-01. No CTAs, no WhatsApp, no form, footer links all broken (#). Design solid; conversion path nonexistent.

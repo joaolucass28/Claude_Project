@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTMA — Para os nossos pais</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #fafafa;
+    --gray-100: #f4f4f4;
+    --gray-200: #e8e8e8;
+    --gray-400: #a0a0a0;
+    --gray-600: #5a5a5a;
+    --gray-800: #222222;
+    --green: #1a6b3c;
+    --green-light: #e8f5ee;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 72px 56px;
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .wordmark {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .cover-label {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cover-body {
+    max-width: 680px;
+  }
+
+  .cover-eyebrow {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .cover-title {
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+
+  .cover-title strong {
+    font-weight: 700;
+  }
+
+  .cover-subtitle {
+    font-size: 1.15rem;
+    color: var(--gray-400);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  .cover-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cover-date { font-size: 0.75rem; color: var(--gray-600); }
+  .cover-names { font-size: 0.85rem; color: var(--gray-400); text-align: right; line-height: 1.6; }
+
+  /* ── PAGE ── */
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 56px;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 72px 56px 0;
+  }
+
+  .section-number {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 40px;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 36px;
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  p {
+    font-size: 1rem;
+    color: var(--gray-800);
+    margin-bottom: 16px;
+    line-height: 1.75;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--gray-800);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  /* ── ANALOGY CARD ── */
+  .analogy {
+    background: var(--gray-100);
+    border-left: 4px solid var(--black);
+    padding: 24px 28px;
+    margin: 28px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .analogy-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 10px;
+  }
+
+  .analogy p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ── WHAT WE DO GRID ── */
+  .service-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .service-card {
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 24px 22px;
+  }
+
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .service-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .service-desc {
+    font-size: 0.88rem;
+    color: var(--gray-600);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ── PLAN STEPS ── */
+  .plan-steps {
+    margin: 32px 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--black);
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content {}
+
+  .step-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    font-size: 0.92rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── AI SIMPLE EXPLAINER ── */
+  .ai-explainer {
+    background: var(--black);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 40px 44px;
+    margin: 32px 0;
+  }
+
+  .ai-explainer-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 20px;
+  }
+
+  .ai-explainer h3 {
+    color: var(--white);
+    margin-top: 0;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+
+  .ai-explainer p {
+    color: #ccc;
+    font-size: 0.96rem;
+    margin-bottom: 14px;
+  }
+
+  .ai-explainer p:last-child { margin-bottom: 0; }
+
+  /* ── REVENUE BLOCK ── */
+  .revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 32px 0;
+    border: 1.5px solid var(--black);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .revenue-item {
+    padding: 28px 24px;
+    border-right: 1px solid var(--gray-200);
+  }
+
+  .revenue-item:last-child { border-right: none; }
+
+  .revenue-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 10px;
+  }
+
+  .revenue-amount {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .revenue-note {
+    font-size: 0.78rem;
+    color: var(--gray-600);
+    line-height: 1.4;
+  }
+
+  /* ── GREEN CALLOUT ── */
+  .green-callout {
+    background: var(--green-light);
+    border-left: 4px solid var(--green);
+    padding: 22px 26px;
+    border-radius: 0 8px 8px 0;
+    margin: 28px 0;
+  }
+
+  .green-callout p {
+    color: var(--green);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    background: var(--black);
+    color: var(--white);
+    padding: 80px 56px;
+    text-align: center;
+  }
+
+  .closing h2 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .closing h2 strong { font-weight: 700; }
+
+  .closing p {
+    font-size: 1.1rem;
+    color: var(--gray-400);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .closing-names {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── DIVIDER LINE ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--gray-200);
+    margin: 40px 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .cover { padding: 48px 28px; }
+    .page, .section-divider { padding-left: 28px; padding-right: 28px; }
+    .service-grid { grid-template-columns: 1fr; }
+    .revenue-grid { grid-template-columns: 1fr; }
+    .revenue-item { border-right: none; border-bottom: 1px solid var(--gray-200); }
+    .revenue-item:last-child { border-bottom: none; }
+    .closing { padding: 60px 28px; }
+  }
+
+  @media print {
+    .cover { min-height: auto; page-break-after: always; }
+    .service-card, .step, .ai-explainer { page-break-inside: avoid; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ CAPA ══ -->
+<div class="cover">
+  <div class="cover-top">
+    <span class="wordmark">OTMA</span>
+    <span class="cover-label">Para a família — Abril 2026</span>
+  </div>
+
+  <div class="cover-body">
+    <p class="cover-eyebrow">Uma apresentação simples</p>
+    <h1 class="cover-title">O que estamos<br>construindo —<br>e <strong>por quê.</strong></h1>
+    <p class="cover-subtitle">Sem termos técnicos. Direto ao ponto. Tudo o que vocês precisam saber sobre o nosso projeto.</p>
+  </div>
+
+  <div class="cover-footer">
+    <span class="cover-date">Abril de 2026</span>
+    <span class="cover-names">João Lucas &amp; Tiago<br>Fundadores — OTMA</span>
+  </div>
+</div>
+
+
+<!-- ══ 01 · O QUE É A OTMA ══ -->
+<div class="section-divider">
+  <p class="section-number">01</p>
+  <h2 class="section-title">O que é a OTMA</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p class="lead">A OTMA é uma agência. Ajudamos empresas a se comunicar melhor, ter um site que funciona de verdade, e usar tecnologia moderna para trabalhar com menos esforço.</p>
+
+  <div class="analogy">
+    <p class="analogy-label">Pensa assim</p>
+    <p>Imagina uma empresa que tem um ótimo produto, mas ninguém sabe explicar o que ela faz. O site é feito nas coxas. A equipe perde horas fazendo coisas à mão que poderiam ser automáticas. <strong>A OTMA entra, olha tudo isso, e arruma.</strong> Com clareza, com organização, e usando as ferramentas certas.</p>
+  </div>
+
+  <p>Não somos uma empresa de tecnologia complicada. Somos uma consultoria prática — a gente vê o problema da empresa, explica o que está errado, e entrega a solução.</p>
+
+</div>
+
+
+<!-- ══ 02 · O QUE A GENTE FAZ ══ -->
+<div class="section-divider">
+  <p class="section-number">02</p>
+  <h2 class="section-title">O que a gente faz</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>Temos cinco tipos de serviço. Cada um resolve um problema diferente que empresas têm no dia a dia:</p>
+
+  <div class="service-grid">
+    <div class="service-card">
+      <span class="service-icon">🏷️</span>
+      <p class="service-name">Identidade da Marca</p>
+      <p class="service-desc">A empresa não sabe se explicar. A gente define o posicionamento dela — quem é, para quem serve, e por que é diferente.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌐</span>
+      <p class="service-name">Site que Converte</p>
+      <p class="service-desc">O site existe mas não traz clientes. A gente reconstrói com estrutura certa e texto que vende.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">⚙️</span>
+      <p class="service-name">Revisão de Processos</p>
+      <p class="service-desc">A equipe perde tempo em tarefas repetitivas. A gente mapeia e mostra o que pode ser melhorado.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🤖</span>
+      <p class="service-name">Automação</p>
+      <p class="service-desc">Tarefas manuais que poderiam ser automáticas — envios de e-mail, relatórios, agendamentos. A gente automatiza.</p>
+    </div>
+    <div class="service-card" style="grid-column: span 2;">
+      <span class="service-icon">💡</span>
+      <p class="service-name">Inteligência Artificial no Negócio</p>
+      <p class="service-desc">Quando a empresa quer usar IA de verdade — não só como curiosidade, mas dentro do processo real dela. A gente projeta e implementa isso de forma que faz sentido para o tamanho e o tipo de negócio.</p>
+    </div>
+  </div>
+
+  <p>A maioria dos clientes começa com o que chamamos de <strong>Diagnóstico Rápido</strong> — um serviço de 3 dias onde a gente analisa o negócio e entrega um relatório com o que encontrou. A partir daí, decidimos juntos o que faz sentido fazer.</p>
+
+</div>
+
+
+<!-- ══ 03 · COMO A IA ENTRA NISSO ══ -->
+<div class="section-divider">
+  <p class="section-number">03</p>
+  <h2 class="section-title">Sobre a inteligência artificial</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>Você já ouviu falar de ChatGPT ou Google Gemini? São programas de computador que conseguem ler textos, responder perguntas e ajudar com tarefas — como um assistente muito inteligente.</p>
+
+  <div class="ai-explainer">
+    <p class="ai-explainer-label">Em termos simples</p>
+    <h3>O que é inteligência artificial?</h3>
+    <p>É um programa que "aprendeu" a partir de bilhões de textos, livros e documentos. Hoje em dia, ele consegue escrever, analisar, resumir, e até criar imagens. Não é mágica — é tecnologia avançada que está disponível para qualquer empresa usar.</p>
+    <p>O problema: a maioria das empresas não sabe <em>como</em> usar. Ficam testando o ChatGPT de vez em quando sem estrutura. <strong>Nossa função é colocar essa tecnologia para trabalhar de forma organizada dentro do negócio do cliente.</strong></p>
+  </div>
+
+  <p>Pensa assim: há 20 anos, ter um site era algo especial. Hoje é básico. Nos próximos 5 anos, usar IA de forma eficiente vai virar básico também. A OTMA existe para ajudar empresas a não ficarem para trás nessa virada.</p>
+
+  <div class="analogy">
+    <p class="analogy-label">Exemplo real</p>
+    <p>Uma clínica médica recebe 80 mensagens por dia no WhatsApp. A equipe passa horas respondendo as mesmas dúvidas. Com IA, um assistente automático responde as perguntas simples, e o time humano cuida só dos casos que precisam de atenção real. <strong>Menos trabalho manual. Mais atendimento de qualidade.</strong></p>
+  </div>
+
+</div>
+
+
+<!-- ══ 04 · O PLANO ══ -->
+<div class="section-divider">
+  <p class="section-number">04</p>
+  <h2 class="section-title">Nosso plano — passo a passo</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>A gente não está improvisando. Temos um plano claro com 3 fases nos próximos meses:</p>
+
+  <div class="plan-steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <p class="step-title">Semana 1 — Preparar o terreno</p>
+        <p class="step-desc">Criar os documentos básicos para atender um cliente: o que a gente oferece, como funciona, qual é o preço. Identificar 3 pessoas conhecidas que têm um problema claro no negócio delas.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <p class="step-title">Semana 2 — Primeiro cliente de verdade</p>
+        <p class="step-desc">Fazer um diagnóstico real com um cliente pagante. Analisar o negócio dele, escrever o relatório, apresentar as conclusões numa ligação de 1 hora. Simples e concreto.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <p class="step-title">Semana 3 em diante — Construir com base em evidência</p>
+        <p class="step-desc">Com o primeiro cliente atendido, criar o site, a identidade visual, e o material de divulgação da OTMA usando o que aprendemos de verdade — não suposições.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <p class="step-title">Meses 2–3 — Escalar</p>
+        <p class="step-desc">Repetir com mais clientes. Refinar os serviços. Construir reputação com casos reais. Buscar os primeiros contratos maiores.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="green-callout">
+    <p>A lógica por trás disso: a maioria das agências gasta meses criando logo, site e identidade antes de ter um cliente. A gente inverte — primeiro provamos que funciona, depois construímos a estrutura. É mais seguro e mais rápido.</p>
+  </div>
+
+</div>
+
+
+<!-- ══ 05 · OS NÚMEROS ══ -->
+<div class="section-divider">
+  <p class="section-number">05</p>
+  <h2 class="section-title">O potencial financeiro</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p>Para entender a escala, veja como os serviços são precificados:</p>
+
+  <div class="revenue-grid">
+    <div class="revenue-item">
+      <p class="revenue-label">Diagnóstico Rápido</p>
+      <p class="revenue-amount">R$1.500</p>
+      <p class="revenue-note">3 dias de análise + relatório + call de 1h</p>
+    </div>
+    <div class="revenue-item">
+      <p class="revenue-label">Site + Marca</p>
+      <p class="revenue-amount">R$6.500</p>
+      <p class="revenue-note">Projeto completo de presença digital</p>
+    </div>
+    <div class="revenue-item">
+      <p class="revenue-label">Automação + IA</p>
+      <p class="revenue-amount">R$14.000</p>
+      <p class="revenue-note">Implementação de sistemas de IA no negócio</p>
+    </div>
+  </div>
+
+  <p>A maioria dos clientes começa com o diagnóstico e naturalmente continua para um projeto maior. Porque depois de 3 dias entendendo o problema, eles querem resolver.</p>
+
+  <h3>Como fica a meta realista?</h3>
+  <p>Se fecharmos 2 diagnósticos por mês + 1 projeto médio por mês, já estamos acima de R$10.000 mensais nos primeiros meses de operação. O teto de projetos de IA é bem mais alto — mas a gente começa do que é concreto e testado.</p>
+
+  <div class="analogy">
+    <p class="analogy-label">Para comparar</p>
+    <p>Um projeto de IA bem executado — que pode custar R$14.000 — economiza para a empresa muito mais do que isso em horas de trabalho manual por ano. Não é custo, é investimento com retorno claro. Por isso os clientes pagam.</p>
+  </div>
+
+</div>
+
+
+<!-- ══ 06 · POR QUE A GENTE ══ -->
+<div class="section-divider">
+  <p class="section-number">06</p>
+  <h2 class="section-title">Por que a gente consegue fazer isso</h2>
+</div>
+
+<div class="page" style="padding-top: 0;">
+
+  <p class="lead">Não estamos apostando em algo novo sem preparo. Essa combinação de habilidades é real e complementar.</p>
+
+  <div class="service-grid">
+    <div class="service-card">
+      <span class="service-icon">🎨</span>
+      <p class="service-name">Design e Branding</p>
+      <p class="service-desc">Posicionamento de marca, identidade visual, sites que comunicam com clareza. Projetos entregues, clientes atendidos.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🧠</span>
+      <p class="service-name">Inteligência Artificial</p>
+      <p class="service-desc">Conhecimento prático de como usar IA em sistemas reais — não teoria, mas implementação dentro de processos de negócio.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📋</span>
+      <p class="service-name">Estratégia e Análise</p>
+      <p class="service-desc">Capacidade de entrar numa empresa, entender o que está errado, e priorizar o que resolve mais com menos esforço.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">⚡</span>
+      <p class="service-name">Velocidade de Execução</p>
+      <p class="service-desc">3 dias para entregar um diagnóstico real. Não prometemos anos de consultoria — entregamos resultado concreto em dias.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <h3>O que nos diferencia de uma agência comum?</h3>
+  <p>Agências tradicionais entregam sites bonitos e param por aí. A gente vai além: integramos marca, presença digital, processo e tecnologia numa visão única do negócio do cliente. É mais difícil de copiar e mais valioso para quem contrata.</p>
+
+</div>
+
+
+<!-- ══ FECHAMENTO ══ -->
+<div class="closing">
+  <h2>Obrigado por<br>acreditar <strong>na gente.</strong></h2>
+  <p>Isso não é um sonho sem plano. É um negócio com metodologia, serviços definidos, precificação clara, e uma estratégia de lançamento que começa pelo mais importante: o primeiro cliente pagante.</p>
+  <p class="closing-names">João Lucas &amp; Tiago — OTMA, Abril 2026</p>
+</div>
+
+</body>
+</html>

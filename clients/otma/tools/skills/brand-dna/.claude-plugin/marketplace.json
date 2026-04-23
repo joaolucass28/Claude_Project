@@ -1,0 +1,17 @@
+{
+  "name": "brand-dna",
+  "owner": {
+    "name": "financebro"
+  },
+  "plugins": [
+    {
+      "name": "brand-dna",
+      "description": "Brand identity interrogation and document generation. Extracts brand essence through structured questioning before producing a complete, specific identity document.",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "financebro"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTMA — MVP Deck</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray-100: #f4f4f4;
+            --gray-200: #e8e8e8;
+            --gray-300: #d4d4d4;
+            --gray-400: #a0a0a0;
+            --gray-600: #5a5a5a;
+            --gray-800: #222222;
+        }
+
+        html {
+            font-size: 15px;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        .deck-progress {
+            position: fixed;
+            inset: 0 0 auto 0;
+            height: 3px;
+            background: rgba(10, 10, 10, 0.08);
+            z-index: 40;
+        }
+
+        .deck-progress>span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: var(--black);
+            transition: width 180ms ease;
+        }
+
+        .deck-nav {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(250, 250, 250, 0.78);
+            border: 1px solid rgba(10, 10, 10, 0.1);
+            backdrop-filter: blur(16px);
+            padding: 10px 12px;
+            border-radius: 999px;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.08);
+        }
+
+        .deck-nav button {
+            appearance: none;
+            border: 0;
+            background: var(--black);
+            color: var(--white);
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .deck-nav button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .deck-nav-status {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            padding: 0 2px;
+            min-width: 92px;
+            text-align: center;
+        }
+
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 32px;
+        }
+
+        .slide-inner {
+            width: min(1180px, 100%);
+        }
+
+        .cover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .cover .slide-inner {
+            min-height: calc(100vh - 96px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .kicker {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 18px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            padding-top: 4px;
+        }
+
+        .wordmark {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .meta {
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            text-align: right;
+        }
+
+        .hero {
+            width: min(760px, 100%);
+            padding: 84px 0 88px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 5.7rem);
+            font-weight: 300;
+            line-height: 0.98;
+            letter-spacing: -0.04em;
+            margin-bottom: 26px;
+        }
+
+        .hero h1 strong {
+            font-weight: 800;
+        }
+
+        .hero p {
+            max-width: 540px;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--gray-400);
+        }
+
+        .cover-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 18px;
+            padding-bottom: 2px;
+        }
+
+        .cover-foot span {
+            font-size: 0.76rem;
+            color: var(--gray-600);
+            letter-spacing: 0.06em;
+        }
+
+        .slide-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1.5px solid var(--black);
+            margin-bottom: 28px;
+        }
+
+        .slide-title h2 {
+            font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        .slide-title .section {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            min-width: 70px;
+            text-align: right;
+        }
+
+        .body-copy {
+            width: min(980px, 100%);
+            margin: 0 auto;
+        }
+
+        .body-copy p,
+        .body-copy li {
+            font-size: 0.98rem;
+            color: var(--gray-800);
+        }
+
+        .body-copy p+p {
+            margin-top: 14px;
+        }
+
+        .callouts {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin: 26px 0;
+        }
+
+        .callout {
+            background: var(--gray-100);
+            border-left: 3px solid var(--black);
+            padding: 18px 20px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .callout p {
+            font-size: 0.92rem;
+            line-height: 1.68;
+            margin: 0;
+        }
+
+        .callout strong {
+            color: var(--black);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .panel {
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        .panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-100);
+        }
+
+        .panel-head h3 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .pill {
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            background: var(--gray-200);
+            padding: 4px 9px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .panel-body {
+            padding: 18px;
+        }
+
+        .panel-body ul {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .panel-body li {
+            position: relative;
+            padding-left: 18px;
+            line-height: 1.6;
+        }
+
+        .panel-body li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--gray-400);
+        }
+
+        .sequence {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            margin: 26px 0 14px;
+        }
+
+        .seq-item {
+            border: 1.5px solid var(--gray-200);
+            border-right: none;
+            padding: 20px;
+            min-height: 186px;
+        }
+
+        .seq-item:last-child {
+            border-right: 1.5px solid var(--gray-200);
+        }
+
+        .seq-num {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 8px;
+        }
+
+        .seq-label {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .seq-desc {
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            line-height: 1.62;
+        }
+
+        .table-wrap {
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 24px 0 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: var(--white);
+        }
+
+        thead tr {
+            border-bottom: 1.5px solid var(--black);
+        }
+
+        thead th {
+            text-align: left;
+            padding: 13px 14px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+            color: var(--gray-600);
+            background: var(--gray-100);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody td {
+            padding: 14px;
+            vertical-align: top;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        tbody td:first-child {
+            font-weight: 600;
+            color: var(--black);
+            white-space: nowrap;
+        }
+
+        .price-block {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            padding: 22px 0;
+            border-top: 1.5px solid var(--black);
+            border-bottom: 1.5px solid var(--black);
+            margin: 26px 0 14px;
+        }
+
+        .price-amount {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .price-label {
+            font-size: 0.84rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .quote-box {
+            background: var(--black);
+            color: var(--white);
+            padding: 28px 30px;
+            border-radius: 10px;
+        }
+
+        .quote-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 14px;
+        }
+
+        .quote-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #e1e1e1;
+        }
+
+        .quote-text strong {
+            color: var(--white);
+        }
+
+        .test-box {
+            background: var(--black);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 24px 0 18px;
+        }
+
+        .test-box p {
+            color: inherit;
+        }
+
+        .test-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            margin-bottom: 12px;
+        }
+
+        .test-question {
+            font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .test-sub {
+            margin-top: 12px;
+            color: var(--gray-400);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        .footer-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-400);
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .muted {
+            color: var(--gray-600);
+        }
+
+        .dark {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .dark .slide-title {
+            border-bottom-color: var(--white);
+        }
+
+        .dark .slide-title .section,
+        .dark .kicker,
+        .dark .footer-line,
+        .dark .muted,
+        .dark .seq-desc,
+        .dark .body-copy p,
+        .dark .body-copy li,
+        .dark .panel-body li,
+        .dark .panel-body p,
+        .dark .panel-head h3,
+        .dark .price-label {
+            color: #d9d9d9;
+        }
+
+        .dark .panel,
+        .dark .seq-item,
+        .dark .table-wrap {
+            border-color: rgba(250, 250, 250, 0.16);
+        }
+
+        .dark .panel-head,
+        .dark .callout {
+            background: rgba(250, 250, 250, 0.06);
+        }
+
+        .dark .callout,
+        .dark .panel-body,
+        .dark .seq-item,
+        .dark .price-block {
+            border-color: rgba(250, 250, 250, 0.16);
+        }
+
+        .dark .callout strong,
+        .dark .slide-title h2,
+        .dark .panel-head h3,
+        .dark .price-amount,
+        .dark .body-copy strong {
+            color: var(--white);
+        }
+
+        .dark .table-wrap,
+        .dark table,
+        .dark thead th {
+            background: rgba(250, 250, 250, 0.02);
+        }
+
+        .dark thead tr {
+            border-bottom-color: rgba(250, 250, 250, 0.18);
+        }
+
+        .dark tbody tr {
+            border-bottom-color: rgba(250, 250, 250, 0.12);
+        }
+
+        .dark tbody td:first-child {
+            color: var(--white);
+        }
+
+        @media (max-width: 900px) {
+            .slide {
+                padding: 30px 18px 42px;
+            }
+
+            .callouts,
+            .grid-2,
+            .sequence {
+                grid-template-columns: 1fr;
+            }
+
+            .seq-item {
+                border-right: 1.5px solid var(--gray-200);
+            }
+
+            .topbar,
+            .cover-foot,
+            .slide-title,
+            .footer-line {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .meta,
+            .slide-title .section {
+                text-align: left;
+            }
+
+            .deck-nav {
+                right: 12px;
+                bottom: 12px;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+
+            html {
+                scroll-snap-type: none;
+                font-size: 13px;
+            }
+
+            body {
+                background: var(--white);
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .deck-progress,
+            .deck-nav {
+                display: none;
+            }
+
+            .slide {
+                min-height: auto;
+                page-break-after: always;
+                break-after: page;
+                padding: 0;
+                align-items: stretch;
+            }
+
+            .slide-inner {
+                width: 100%;
+                min-height: auto;
+                padding: 0;
+            }
+
+            .cover .slide-inner {
+                min-height: auto;
+            }
+
+            .hero {
+                padding: 56px 0 58px;
+            }
+
+            .slide-title {
+                margin-bottom: 20px;
+                padding-bottom: 14px;
+            }
+
+            .body-copy,
+            .slide-inner {
+                max-width: none;
+            }
+
+            .panel,
+            .quote-box,
+            .test-box,
+            .table-wrap,
+            .price-block,
+            .callout,
+            .seq-item {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .sequence,
+            .grid-2,
+            .callouts {
+                gap: 12px;
+            }
+
+            .cover-foot,
+            .topbar,
+            .slide-title,
+            .footer-line {
+                gap: 10px;
+            }
+
+            .dark {
+                background: var(--black) !important;
+                color: var(--white) !important;
+            }
+
+            .dark .panel-head,
+            .dark .callout {
+                background: rgba(250, 250, 250, 0.06) !important;
+            }
+
+            .dark .quote-box,
+            .dark .test-box {
+                background: var(--black) !important;
+            }
+
+            .dark .footer-line {
+                border-top-color: rgba(250, 250, 250, 0.16);
+            }
+
+            .dark .slide-title {
+                border-bottom-color: var(--white);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="deck-progress" aria-hidden="true"><span id="progress"></span></div>
+
+    <div class="deck-nav" aria-label="Slide navigation">
+        <button id="prevBtn" type="button" aria-label="Previous slide">←</button>
+        <div class="deck-nav-status" id="status">1 / 8</div>
+        <button id="nextBtn" type="button" aria-label="Next slide">→</button>
+    </div>
+
+    <section class="slide cover" data-slide>
+        <div class="slide-inner">
+            <div class="topbar">
+                <div class="wordmark">OTMA</div>
+                <div class="meta">Confidential internal brief<br>April 2026</div>
+            </div>
+
+            <div class="hero">
+                <p class="kicker">Agency MVP deck</p>
+                <h1>From idea<br>to <strong>first client</strong><br>in 3 weeks.</h1>
+                <p>A slide version of the brief, keeping the same monochrome palette and editorial restraint while
+                    turning the logic into a presentation flow.</p>
+            </div>
+
+            <div class="cover-foot">
+                <span>Prepared April 7, 2026</span>
+                <span>Diagnose → Build → Transfer<br>The OTMA methodology</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>The core insight</h2>
+                <div class="section">01</div>
+            </div>
+            <div class="body-copy">
+                <p>Most agency launches start with brand, website, and copy. That feels complete, but it skips the only
+                    thing that matters early on: whether someone will actually pay for the work.</p>
+                <p>OTMA flips the sequence. The first move is not polish. The first move is proof.</p>
+
+                <div class="callouts">
+                    <div class="callout">
+                        <p><strong>Standard sequence:</strong><br>Brand → Offers → Website → Launch → Clients</p>
+                    </div>
+                    <div class="callout">
+                        <p><strong>MVP sequence:</strong><br>First client → Clarity Sprint → Build the rest from
+                            evidence</p>
+                    </div>
+                </div>
+
+                <p>The brand foundation, site, and offer copy are still important. They just belong after the first real
+                    diagnostic engagement, not before it.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>The MVP is one Clarity Sprint</h2>
+                <div class="section">02</div>
+            </div>
+
+            <div class="body-copy">
+                <div class="sequence">
+                    <div class="seq-item">
+                        <div class="seq-num">Day 1</div>
+                        <div class="seq-label">Access</div>
+                        <div class="seq-desc">Client shares existing materials: brand, site, workflow description, or
+                            internal tools.</div>
+                    </div>
+                    <div class="seq-item">
+                        <div class="seq-num">Days 2–3</div>
+                        <div class="seq-label">Diagnose</div>
+                        <div class="seq-desc">OTMA maps current state, identifies the gap, and finds the
+                            highest-leverage intervention.</div>
+                    </div>
+                    <div class="seq-item">
+                        <div class="seq-num">Day 3</div>
+                        <div class="seq-label">Deliver</div>
+                        <div class="seq-desc">Written Situation Report plus a 60-minute walkthrough call with the
+                            client.</div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>What the client gets</h3><span class="pill">Deliverables</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Written Situation Report with current state, gap analysis, and priorities</li>
+                                <li>60-minute live walkthrough of findings</li>
+                                <li>Decision point: continue with OTMA or execute elsewhere</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>What it is not</h3><span class="pill">Boundary</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Not a free discovery call with a nicer name</li>
+                                <li>Not a sales hook for more hours</li>
+                                <li>Not a generic recommendation deck</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="price-block">
+                    <div class="price-amount">R$1.500 – R$2.000</div>
+                    <div class="price-label">Fixed price<br>3 business days</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>The minimal shelf</h2>
+                <div class="section">03</div>
+            </div>
+
+            <div class="body-copy">
+                <p>Nothing else is required before the first sprint. Build only the pieces needed to sell and deliver
+                    one real engagement.</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>What it is</th>
+                                <th>Build time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Clarity Sprint 1-pager</td>
+                                <td>One page explaining what it is, what it produces, price, and how to start.</td>
+                                <td>1 session</td>
+                            </tr>
+                            <tr>
+                                <td>Outreach message</td>
+                                <td>Three sentences to a warm contact that name the problem, name the offer, and ask one
+                                    question.</td>
+                                <td>30 minutes</td>
+                            </tr>
+                            <tr>
+                                <td>Intake questions</td>
+                                <td>Five questions that request access to existing materials after the client says yes.
+                                </td>
+                                <td>30 minutes</td>
+                            </tr>
+                            <tr>
+                                <td>Situation Report template</td>
+                                <td>Current State → Gap Analysis → Priority Intervention → Path Forward.</td>
+                                <td>1 session</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="muted"><strong>What you do not need yet:</strong> a website, a logo, offer copy for five
+                    service lines, agent configs, or a content calendar.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>The outreach message</h2>
+                <div class="section">04</div>
+            </div>
+
+            <div class="body-copy">
+                <p>Each message should name a specific problem already visible in the contact's situation. The ask has
+                    to stay narrow and easy to answer.</p>
+
+                <div class="grid-2">
+                    <div class="quote-box">
+                        <div class="quote-label">Version A · Positioning</div>
+                        <div class="quote-text">Tenho acompanhado o que você está construindo e tenho uma impressão
+                            clara de que o posicionamento ainda não está capturando o valor real do que você entrega.
+                            Estou testando um diagnóstico rápido — 3 dias, resultado escrito, R$1.500 — que mapeia
+                            exatamente onde está o gap e qual é a melhor intervenção. <strong>Faria sentido para você
+                                agora?</strong></div>
+                    </div>
+                    <div class="quote-box">
+                        <div class="quote-label">Version B · Website</div>
+                        <div class="quote-text">Olhei seu site e tenho uma hipótese de por que ele não está convertendo
+                            do jeito que deveria — mas quero confirmar antes de falar qualquer coisa. Estou testando um
+                            diagnóstico de 3 dias que entrega uma análise escrita e uma call de 60 minutos com o que
+                            encontrei, por R$1.500. <strong>Você toparia testar comigo?</strong></div>
+                    </div>
+                </div>
+
+                <div style="margin-top:18px" class="quote-box">
+                    <div class="quote-label">Version C · Workflow</div>
+                    <div class="quote-text">Sei que você está com fricção operacional [no processo X] — já ouvi você
+                        mencionar isso mais de uma vez. Estou testando um diagnóstico de 3 dias onde eu mapeio o que
+                        está acontecendo de verdade e entrego um relatório priorizado, R$1.500. <strong>Posso usar o seu
+                            caso como piloto?</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>Implementation track</h2>
+                <div class="section">05</div>
+            </div>
+
+            <div class="body-copy">
+                <p>Three weeks. Two phases. One test.</p>
+
+                <div class="grid-2" style="margin-top: 20px;">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>Week 1 — Build the shelf</h3><span class="pill">4 items · ~3 hours</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Write the Clarity Sprint 1-pager</li>
+                                <li>Write the Situation Report template</li>
+                                <li>Identify 3 warm contacts with an observable problem</li>
+                                <li>Write and send outreach to all 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>Week 2 — First engagement</h3><span class="pill">First client</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Run intake and request access to materials</li>
+                                <li>Analyze, map the gap, and identify the intervention</li>
+                                <li>Write and deliver the Situation Report</li>
+                                <li>Document improvisations in a gap log</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" style="margin-top: 18px;">
+                    <div class="panel-head">
+                        <h3>Week 3 — Build from evidence</h3><span class="pill">Now it makes sense</span>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>Fill brand-foundation.md using real delivery evidence</li>
+                            <li>Convert the delivery into the first case study</li>
+                            <li>Use the case study as the homepage proof point</li>
+                            <li>Start site-plan.md from what was actually learned</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>The five service lines</h2>
+                <div class="section">06</div>
+            </div>
+
+            <div class="body-copy">
+                <p>These are ready after the first Clarity Sprint validates the model. They are not the entry point.</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Offer</th>
+                                <th>Trigger</th>
+                                <th>Duration</th>
+                                <th>Price floor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Brand Foundation Sprint</td>
+                                <td>No clear positioning, commodity look</td>
+                                <td>10 days</td>
+                                <td>R$4.500</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Authority Website System</td>
+                                <td>Brand exists, website does not convert</td>
+                                <td>15 days</td>
+                                <td>R$6.500</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Workflow Optimization Audit</td>
+                                <td>Manual work that should be automated</td>
+                                <td>5 days</td>
+                                <td>R$4.500</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Automation Build System</td>
+                                <td>Process identified, ready to automate</td>
+                                <td>10 days</td>
+                                <td>R$8.000</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>AI Agent Strategy & Implementation</td>
+                                <td>AI inside existing systems, not on top</td>
+                                <td>15 days</td>
+                                <td>R$14.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="muted">The funnel is simple: Clarity Sprint first, then identify the right service line, then
+                    proceed with a core engagement based on evidence.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide dark" data-slide>
+        <div class="slide-inner">
+            <div class="slide-title">
+                <h2>The test</h2>
+                <div class="section">07</div>
+            </div>
+
+            <div class="body-copy">
+                <p>After the first Clarity Sprint is delivered, one question decides the next move.</p>
+
+                <div class="test-box">
+                    <div class="test-label">The validation question</div>
+                    <div class="test-question">Did the client say something specific they had not thought of before, and
+                        did they want to keep working with OTMA?</div>
+                    <div class="test-sub">If yes: the model works. Build the rest.<br>If no: diagnose why before
+                        building anything else downstream.</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>If yes</h3><span class="pill">Unlock</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Fill brand-foundation.md from delivery evidence</li>
+                                <li>Run brand-dna and brand-os to derive the brand system</li>
+                                <li>Build site-plan.md and homepage copy</li>
+                                <li>Move into the second Clarity Sprint with a soft launch</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>If no</h3><span class="pill">Diagnose</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>Situation Report was too generic</li>
+                                <li>Wrong client selected</li>
+                                <li>Delivery was a presentation, not a diagnosis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-line">
+                    <span>OTMA Agency · Internal MVP Brief</span>
+                    <span>Confidential</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        (function () {
+            const slides = Array.from(document.querySelectorAll('[data-slide]'));
+            const progress = document.getElementById('progress');
+            const status = document.getElementById('status');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let activeIndex = 0;
+
+            function clampIndex(index) {
+                return Math.max(0, Math.min(slides.length - 1, index));
+            }
+
+            function updateControls() {
+                const count = slides.length;
+                status.textContent = `${activeIndex + 1} / ${count}`;
+                prevBtn.disabled = activeIndex === 0;
+                nextBtn.disabled = activeIndex === count - 1;
+                progress.style.width = `${((activeIndex + 1) / count) * 100}%`;
+            }
+
+            function goTo(index) {
+                activeIndex = clampIndex(index);
+                slides[activeIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                updateControls();
+            }
+
+            prevBtn.addEventListener('click', () => goTo(activeIndex - 1));
+            nextBtn.addEventListener('click', () => goTo(activeIndex + 1));
+
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowDown' || event.key === 'ArrowRight' || event.key === 'PageDown') {
+                    event.preventDefault();
+                    goTo(activeIndex + 1);
+                }
+                if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || event.key === 'PageUp') {
+                    event.preventDefault();
+                    goTo(activeIndex - 1);
+                }
+                if (event.key === 'Home') {
+                    event.preventDefault();
+                    goTo(0);
+                }
+                if (event.key === 'End') {
+                    event.preventDefault();
+                    goTo(slides.length - 1);
+                }
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                if (!visible) return;
+                const index = slides.indexOf(visible.target);
+                if (index !== -1) {
+                    activeIndex = index;
+                    updateControls();
+                }
+            }, { threshold: [0.5, 0.65, 0.8] });
+
+            slides.forEach((slide) => observer.observe(slide));
+            updateControls();
+        })();
+    </script>
+</body>
+
+</html>
