@@ -1,3 +1,6 @@
 [submodule "clients/otma"]
 	path = clients/otma
 	url = https://github.com/joaolucass28/otma.git
+[submodule "clients/unio"]
+	path = clients/unio
+	url = https://github.com/joaolucass28/otma-unioventures
