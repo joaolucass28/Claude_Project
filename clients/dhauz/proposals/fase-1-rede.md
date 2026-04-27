@@ -1,4 +1,4 @@
-# Proposta Fase 1 — Rede Unificada Dhauz
+# Proposta Fase 1 — Rede Unificada Dhauz (Ecossistema UniFi)
 
 **Status:** Entregue — aguardando aprovação  
 **Data:** Abril 2026  
@@ -8,78 +8,101 @@
 
 ## O que será entregue
 
-Uma rede única, estável e gerenciável, com cobertura completa em ambos os andares da Dhauz — pronta para operar hoje e escalar amanhã.
+Uma rede corporativa unificada, gerenciada centralmente pelo ecossistema Ubiquiti UniFi — com cobertura sem pontos cegos nos dois andares, VLANs segmentadas e dashboard de monitoramento em tempo real.
 
 ---
 
-## Escopo
+## Arquitetura
 
-### Equipamentos e instalação
+```
+[Internet] → Cloud Gateway → Switch PoE → U6 Pro (andar de cima)
+                                        → U6 Lite (andar de baixo — sala)
+                                        → U6 Lite (andar de baixo — cozinha)
+                                        → [porta reservada — Servidor Dhauz, Fase 2]
+```
 
-| Item | Qtd | Especificação |
-|------|-----|--------------|
-| Access Point | 1 | UniFi U6 Pro — sala principal (andar de cima) |
-| Access Point | 2 | UniFi U6 Lite — sala de reunião + cobertura andar de baixo |
-| Controladora | 1 | UniFi — gestão centralizada da rede |
-| Switch PoE | 1 | 8–16 portas — energia + dados em um único cabo |
-| Cabeamento | — | Cabo estruturado + instalação (extensão conforme obra) |
+---
 
-### Configuração inclusa
+## Equipamentos
 
-- Unificação das 3 redes existentes em 1 rede gerenciada
-- Criação de 3 VLANs:
-  - **Corporativa** — equipe interna
-  - **Visitantes** — guest sem acesso à rede interna
-  - **IoT** — Alexa e demais dispositivos isolados
-- Dashboard de monitoramento (dispositivos, consumo, alertas)
-- Regras de acesso e bloqueio configuradas
+| Camada | Equipamento | Qtd | Função | Estimativa |
+|--------|-------------|-----|--------|-----------|
+| **Gestão** | UniFi Cloud Gateway (Dream Machine Pro ou Cloud Gateway Ultra) | 1 | Roteamento + painel UniFi OS + regras de segurança | ~R$ 1.000 |
+| **Distribuição** | UniFi Switch PoE | 1 | Alimenta APs com energia + dados pelo mesmo cabo. Porta reservada para servidor Fase 2. | R$ 800 – 1.500 |
+| **Wi-Fi** | UniFi U6 Pro | 1 | Sala principal — alta densidade, antenas potentes | ~R$ 1.000 |
+| **Wi-Fi** | UniFi U6 Lite ou U6+ | 2 | Cobertura andar de baixo (sala + cozinha) | ~R$ 750 cada |
+| **Física** | Cabeamento Cat6 | — | Rack → teto (ponto de fixação de cada AP) | R$ 500 – 1.500 |
+
+---
+
+## Configuração inclusa
+
+### VLANs
+
+| VLAN | Nome | Acesso | Limitações |
+|------|------|--------|-----------|
+| 10 | Empresa | Internet + servidor Fase 2 | Nenhuma |
+| 20 | Visitantes | Apenas internet | Client Isolation ativo · limite de banda · sem acesso ao servidor |
+| 30 | IoT | Apenas internet | Isolado do restante · Alexa e smart devices aqui |
+
+### Otimizações de RF
+
+- Escaneamento de canais para identificar frequências menos congestionadas no ambiente
+- Ajuste de potência por AP para sobreposição controlada de cobertura
+- **Fast Roaming ativado** — usuários transitam entre andares sem quedas de chamada
+
+### Monitoramento
+
+- Dashboard UniFi OS com dispositivos conectados em tempo real
+- Identificação de consumo por usuário/dispositivo (resolve o problema da banda descontrolada)
+- Bloqueios e regras aplicáveis em tempo real pelo painel
 
 ---
 
 ## Investimento
 
-| Item | Valor |
-|------|-------|
-| Access Points (3x) | R$ 2.500 – 3.000 |
-| Controladora | R$ 1.000 |
+| Item | Valor estimado |
+|------|---------------|
+| Cloud Gateway | ~R$ 1.000 |
 | Switch PoE | R$ 800 – 1.500 |
-| Cabeamento + instalação | R$ 500 – 1.500 |
+| U6 Pro × 1 | ~R$ 1.000 |
+| U6 Lite/U6+ × 2 | ~R$ 1.500 |
+| Cabeamento Cat6 + instalação | R$ 500 – 1.500 |
 | **Total** | **R$ 4.800 – 7.000** |
 
-*Valor final definido após confirmação do cabeamento necessário (visita técnica pré-instalação).*
+*Valor final após visita técnica para medir extensão do cabeamento.*
 
 ---
 
 ## Prazo
 
-| Etapa | Tempo estimado |
-|-------|---------------|
+| Etapa | Estimativa |
+|-------|-----------|
 | Aquisição dos equipamentos | 3–7 dias |
-| Instalação e cabeamento | 1–2 dias |
-| Configuração e testes | 1 dia |
-| Handoff com equipe Dhauz | 1 sessão (30–60 min) |
+| Visita técnica + cabeamento | 1–2 dias |
+| Instalação, adoção no UniFi OS e configuração | 1 dia |
+| Testes (Fast Roaming, VLANs, monitoramento) | meio dia |
+| Handoff com responsável técnico Dhauz | 1 sessão (30–60 min) |
 | **Total** | **~2 semanas após aprovação** |
 
 ---
 
 ## O que NÃO está incluso
 
-- Equipamentos de terceiros não listados acima
-- Obras de alvenaria (caso necessário para passagem de cabos)
-- Contratação ou upgrade do plano de internet
-- Servidor / NAS (Fase 2 — proposta separada)
+- Obras de alvenaria para passagem de cabos (se necessário)
+- Upgrade do plano de internet ou contratação de IP fixo
+- Servidor / NAS / Proxmox (Fase 2 — proposta separada)
+- Suporte contínuo pós-handoff (pode ser contratado como Ongoing OTMA)
 
 ---
 
 ## Critério de encerramento
 
-> A entrega estará concluída quando um responsável da Dhauz conseguir acessar o dashboard da rede, identificar dispositivos conectados e executar um bloqueio de acesso — sem assistência da OTMA.
+> A entrega estará concluída quando o responsável técnico da Dhauz acessar o painel UniFi OS, identificar dispositivos conectados por VLAN e executar um bloqueio de acesso — sem assistência da OTMA.
 
 ---
 
 ## Aprovação
-
-Para iniciar: confirmar aprovação por escrito (WhatsApp ou email) com o valor final acordado.
 
 **Decisor:** [→ preencher]  
 **Aprovado em:** [→ preencher]  

@@ -1,7 +1,8 @@
 # RPPI — Dhauz | Abril 2026
 **Tipo:** Relatório de Proposta e Projeto de Implementação de Infraestrutura  
 **Executado por:** OTMA  
-**Data da vistoria:** Abril 2026
+**Data da vistoria:** Abril 2026  
+**Ecossistema:** Ubiquiti UniFi (padrão corporativo)
 
 ---
 
@@ -11,95 +12,111 @@
 
 | # | Problema | Impacto |
 |---|----------|---------|
-| 1 | 3 redes diferentes na casa | Desorganização total, sem integração |
-| 2 | Consumo de internet descontrolado | Algo puxando banda absurda, origem desconhecida |
-| 3 | Internet inconsistente no andar de baixo | Cobertura deficiente em zonas críticas |
-| 4 | Ausência de gestão central | Sem visibilidade, sem controle, sem alertas |
+| 1 | 3 redes diferentes sem integração | Desorganização total, sem gestão central |
+| 2 | Consumo de banda descontrolado | Origem não identificada, sem rastreabilidade |
+| 3 | Cobertura inconsistente no andar de baixo | Zonas mortas, experiência irregular |
+| 4 | Ausência de gestão central | Sem visibilidade, sem alertas, sem controle |
 
 ### Oportunidade identificada
 
-- Unificar tudo em **uma única rede inteligente**
-- Criar controle total de usuários e dispositivos
-- Preparar estrutura para servidor futuro sem retrabalho
+- Unificar tudo em **uma única rede gerenciada** com topologia cabeada centralizada
+- Criar controle total via painel UniFi OS (dispositivos, consumo, bloqueios, VLANs)
+- Preparar a estrutura física e lógica para receber o servidor Dhauz na Fase 2 sem retrabalho
 
 ---
 
-## 2. Proposta — Fase 1: Unificação da Rede
+## 2. Arquitetura — Ecossistema Ubiquiti UniFi
 
-**Objetivo:** Uma rede única, estável e gerenciável com cobertura total em ambos os andares.
+### Por que UniFi
 
-### Mapeamento por andar
+O ecossistema UniFi é o padrão ouro para demandas corporativas desse perfil. Diferente de sistemas mesh domésticos, o UniFi exige **topologia cabeada centralizada** — e é exatamente isso que garante estabilidade, performance e gestão real.
 
-**Andar de cima (área mais crítica)**
-- Sala principal (muita gente) → AP mais forte
-- Sala de reunião → cobertura compartilhada
+A Ubiquiti domina a camada de rede (roteamento, switching, Wi-Fi). Não fabricam servidores de aplicação — o servidor Dhauz (Fase 2) será hardware dedicado integrado via UniFi Switch.
 
-**Andar de baixo**
-- Sala Arco + sala das 3 pessoas → ponto central
-- Região cozinha / Presotte → cobertura complementar
+---
 
-### Equipamentos definidos
+## 3. Equipamentos — Fase 1
 
-| Equipamento | Especificação | Estimativa |
-|-------------|--------------|-----------|
-| AP forte | UniFi U6 Pro (sala principal) | ~R$ 1.000 |
-| AP intermediário × 2 | UniFi U6 Lite | ~R$ 750 cada |
-| Controladora | UniFi (gestão central) | ~R$ 1.000 |
-| Switch PoE | 8–16 portas | R$ 800 – 1.500 |
-| Cabeamento + instalação | Cabo + mão de obra | R$ 500 – 1.500 |
+### Camada 1 — Roteamento e Gestão (o cérebro)
 
-### Totais
+| Equipamento | Função | Estimativa |
+|-------------|--------|-----------|
+| **UniFi Cloud Gateway** (Dream Machine Pro ou Cloud Gateway Ultra) | Substitui o roteador da operadora. Faz roteamento, gestão unificada via UniFi OS, aplica regras de segurança e VLANs | ~R$ 1.000 |
+
+### Camada 2 — Distribuição (Switch PoE)
+
+| Equipamento | Função | Estimativa |
+|-------------|--------|-----------|
+| **UniFi Switch PoE** | Alimenta os APs com energia + dados pelo mesmo cabo. Mantém o rack organizado. Permite expansão futura. Servidor Dhauz (Fase 2) conecta aqui. | R$ 800 – 1.500 |
+
+### Camada 3 — Transmissão Wi-Fi (Access Points)
+
+| Local | Equipamento | Motivo | Estimativa |
+|-------|-------------|--------|-----------|
+| Andar de cima — Sala principal | **UniFi U6 Pro** | Antenas mais potentes para alta densidade de usuários | ~R$ 1.000 |
+| Andar de baixo — Sala Arco + 3 pessoas | **UniFi U6 Lite ou U6+** | Cobertura central do andar | ~R$ 750 |
+| Andar de baixo — Cozinha / Presotte | **UniFi U6 Lite ou U6+** | Cobertura complementar | ~R$ 750 |
+
+### Cabeamento
+
+| Item | Especificação | Estimativa |
+|------|--------------|-----------|
+| Cabo estruturado | Cat6 saindo do rack central para pontos de fixação dos APs no teto | R$ 500 – 1.500 |
+
+---
+
+## 4. Totais — Fase 1
 
 | Item | Valor estimado |
 |------|---------------|
-| Access Points (3x) | R$ 2.500 – 3.000 |
-| Controladora | R$ 1.000 |
+| Cloud Gateway (controladora) | ~R$ 1.000 |
 | Switch PoE | R$ 800 – 1.500 |
-| Cabeamento | R$ 500 – 1.500 |
+| U6 Pro × 1 | ~R$ 1.000 |
+| U6 Lite/U6+ × 2 | ~R$ 1.500 |
+| Cabeamento Cat6 + instalação | R$ 500 – 1.500 |
 | **TOTAL FASE 1** | **R$ 4.800 – 7.000** |
 
-### O que a Fase 1 entrega
+---
 
-- 1 rede única (fim dos 3 reinos)
-- VLANs separadas: Corporativa · Visitantes · IoT
-- Controle total: quem está conectado, quanto consome, bloqueios e regras
-- Base estruturada e pronta para servidor (Fase 2 sem retrabalho)
+## 5. O que a Fase 1 entrega
+
+- 1 rede única gerenciada (fim dos 3 reinos)
+- VLANs configuradas:
+  - **VLAN 10 — Empresa:** acesso total à internet e ao futuro servidor
+  - **VLAN 20 — Visitantes:** Client Isolation + limitação de banda + bloqueio ao servidor
+  - **VLAN 30 — IoT:** isolamento total de smart TVs, Alexa e dispositivos vulneráveis
+- Fast Roaming ativo — usuários transitam entre andares sem quedas
+- Dashboard com identificação exata de quem consome banda e controle em tempo real
+- **Base pronta para o servidor Dhauz (Fase 2) via porta dedicada no Switch PoE**
 
 ---
 
-## 3. Proposta — Fase 2: Servidor Dhauz *(planejada)*
+## 6. Servidor Dhauz — Fase 2 *(planejada)*
 
-**Objetivo:** Transformar a operação em infraestrutura de dados escalável.
+Com a rede UniFi estável e as VLANs configuradas, o ambiente está maduro para a Fase 2.
 
-### Sub-fases
+| Componente | Especificação | Estimativa |
+|------------|--------------|-----------|
+| Servidor / workstation dedicado | Hardware rodando **Proxmox** (hypervisor confiável) para VMs, banco de dados, automações | R$ 6.000 – 15.000 |
+| Armazenamento | SSD + HD híbrido | R$ 2.000 – 6.000 |
+| Backup | Local + cloud | R$ 500 – 2.000 |
+| Conexão | Plugado diretamente no UniFi Switch (porta de alta velocidade) — sem gargalos no tráfego interno | — |
+| Upgrade de internet | Fibra robusta + IP fixo | R$ 200 – 600/mês |
+| **TOTAL FASE 2** | | **R$ 8.000 – 25.000+** |
 
-| Sub-fase | Escopo | Investimento |
-|----------|--------|-------------|
-| Fase 2A — NAS | Armazenamento central, backup, compartilhamento de arquivos | R$ 3k – 8k |
-| Fase 2B — Servidor real | Aplicações, banco de dados, automações, controle de mídia | R$ 8k – 15k |
-| Fase 2C — Infra completa | IP fixo, fibra robusta, servidor dedicado escalável | R$ 15k – 25k+ |
-
-**Observação:** Fase 2 foi deliberadamente adiada. Decisão correta — sem rede estável, servidor vira problema.
-
----
-
-## 4. Leitura estratégica
-
-> A decisão de fazer a rede primeiro é a certa. Com rede estruturada, o servidor vira vantagem — sem ela, vira custo.
-
-**Sequência recomendada:**
-1. Fase 1 agora (~R$5k–7k) → resolve o caos atual
-2. Fase 2A em 3–6 meses → NAS após rede estabilizada
-3. Fase 2B/2C conforme crescimento da operação
+**Decisão correta da Dhauz:** adiar Fase 2 até a rede estar estabilizada. Sem rede sólida, servidor vira problema — com ela, vira vantagem.
 
 ---
 
-## 5. Próximos passos após aprovação da Fase 1
+## 7. Próximos passos após aprovação
 
 - [ ] Confirmar aprovação formal com decisor
-- [ ] Agendar início das obras / instalação de cabeamento
-- [ ] Adquirir equipamentos (U6 Pro + 2x U6 Lite + Switch PoE + controladora)
-- [ ] Executar instalação (usar Framework: Célula de Entrega)
-- [ ] Configurar VLANs e controladora
+- [ ] Agendar visita técnica pré-instalação (confirmar extensão do cabeamento)
+- [ ] Adquirir equipamentos (U6 Pro + 2× U6 Lite/U6+ + Switch PoE + Cloud Gateway)
+- [ ] Executar cabeamento Cat6 (rack → teto nos pontos de fixação dos APs)
+- [ ] Instalar e adotar equipamentos no painel UniFi OS
+- [ ] Configurar VLANs 10 / 20 / 30
+- [ ] Escanear canais RF + ajustar potência + ativar Fast Roaming
+- [ ] Identificar origem do consumo absurdo de banda
 - [ ] Protocolo de Handoff com responsável técnico da Dhauz
 - [ ] Extrair skill do processo → `/extract-skill`
