@@ -1,0 +1,44 @@
+name: Auto Commit and Push
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-commit-on-main
+  cancel-in-progress: true
+
+jobs:
+  auto-commit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Add your update/build/format commands here if needed.
+      # Any file changes produced in this job will be auto-committed below.
+
+      - name: Detect changes
+        id: detect
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push changes
+        if: steps.detect.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: automated updates [skip ci]"
+          git push
